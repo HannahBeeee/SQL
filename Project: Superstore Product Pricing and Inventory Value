@@ -1,0 +1,108 @@
+
+-- Project Title:
+-- Superstore Product Pricing and Inventory Value
+
+-- Overall Research Question:
+-- How do product prices vary across the store, and what is
+-- the total financial value of inventory currently in stock?
+
+
+-- Create the Superstore dataset
+
+CREATE TABLE superstore (
+    item_id INTEGER PRIMARY KEY,
+    item_name TEXT,
+    category TEXT,
+    price DECIMAL(10, 2),
+    stock_quantity INTEGER,
+    average_rating DECIMAL(3, 2)
+);
+
+
+-- Insert product information into the dataset
+
+INSERT INTO superstore (item_id, item_name, category, price, stock_quantity, average_rating)
+VALUES
+    (1, 'Stainless Steel Cookware Set', 'Kitchen Supplies', 89.99, 50, 4.6),
+    (2, 'Memory Foam Mattress', 'Furnishings', 499.99, 30, 4.8),
+    (3, 'Smart LED TV', 'Electronics', 549.00, 20, 4.5),
+    (4, 'Robot Vacuum Cleaner', 'Appliances', 199.50, 40, 4.3),
+    (5, 'Wireless Bluetooth Speaker', 'Electronics', 39.99, 60, 4.2),
+    (6, 'Non-Stick Baking Set', 'Kitchen Supplies', 29.95, 80, 4.4),
+    (7, 'Cotton Bedding Set', 'Furnishings', 89.00, 25, 4.7),
+    (8, 'Smart Home Security Camera', 'Electronics', 79.95, 15, 4.1),
+    (9, 'Air Purifier', 'Appliances', 129.50, 35, 4.6),
+    (10, 'Premium Coffee Maker', 'Kitchen Supplies', 79.99, 50, 4.9),
+    (11, 'Ergonomic Office Chair', 'Furnishings', 189.00, 20, 4.5),
+    (12, 'Wireless Earbuds', 'Electronics', 49.99, 75, 4.3),
+    (13, 'Slow Cooker', 'Appliances', 49.95, 30, 4.7),
+    (14, 'Cutlery Set', 'Kitchen Supplies', 34.50, 40, 4.4),
+    (15, 'Cozy Throw Blanket', 'Furnishings', 24.99, 100, 4.2)
+;
+
+
+-- What information is available in the dataset?
+
+SELECT *
+FROM superstore
+LIMIT 5
+;
+
+
+-- 1. How do product prices compare from lowest to highest?
+
+SELECT item_name
+    , ROUND(price, 2) AS price
+FROM superstore
+ORDER BY price ASC
+;
+
+
+-- 2. What is the average price of products in the store?
+
+SELECT ROUND(AVG(price), 2) AS average_price
+FROM superstore
+;
+
+
+-- 3. What is the highest product price in the Kitchen Supplies category?
+
+SELECT ROUND(MAX(price), 2) AS highest_kitchen_price
+FROM superstore
+WHERE category = 'Kitchen Supplies'
+;
+
+
+-- 4. What is the total dollar value of all inventory currently in stock?
+
+SELECT ROUND(SUM(price * stock_quantity), 2) AS total_inventory_value
+FROM superstore
+;
+
+
+-- 5. Which products contribute the most to total inventory value?
+
+SELECT item_name
+    , ROUND(price, 2) AS price
+    , stock_quantity
+    , ROUND(price * stock_quantity, 2) AS total_stock_value
+FROM superstore
+ORDER BY total_stock_value DESC
+;
+
+
+-- Findings:
+-- The dataset includes 15 products across four categories.
+-- The average product price is $142.35.
+-- Product prices range from $24.99 to $549.00.
+-- The highest-priced Kitchen Supplies item costs $89.99.
+-- The total inventory value is $68,117.60.
+--
+-- The Memory Foam Mattress contributes the highest inventory
+-- value at $14,999.70, followed by the Smart LED TV at $10,980.00.
+-- The Robot Vacuum Cleaner ranks third at $7,980.00.
+--
+-- These findings demonstrate how product prices and stock
+-- quantities contribute to overall inventory value.
+-- Products with higher prices or larger stock quantities
+-- can represent a greater share of the store's inventory value.
